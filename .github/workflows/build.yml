@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Build Firmware
 
 on:
   push:
@@ -22,8 +22,9 @@ jobs:
     - uses: "actions/setup-python@v2"
       with:
         python-version: "${{ matrix.python-version }}"
+    - name: install qmk
+      run: python3 -m pip install --user qmk
     - name: setup qmk
       run: qmk setup -H qmk_firmware
-           python3 -m pip install --user qmk
     - name: make
       run: make
