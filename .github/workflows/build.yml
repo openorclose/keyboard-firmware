@@ -25,6 +25,6 @@ jobs:
     - name: install qmk
       run: python3 -m pip install --user qmk
     - name: setup qmk
-      run: qmk setup -H qmk_firmware
+      run: qmk setup -y -H ./qmk_firmware
     - name: make
       run: make
