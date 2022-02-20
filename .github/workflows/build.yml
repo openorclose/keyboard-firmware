@@ -1,0 +1,38 @@
+name: Build Firmware
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+        #token: ${{ secrets.PAT_TOKEN }}
+    - uses: "actions/setup-python@v2"
+      with:
+        python-version: "${{ matrix.python-version }}"
+    - name: install qmk
+      run: python3 -m pip install --user qmk
+    - name: setup qmk
+      run: qmk setup -y -H ./qmk_firmware
+    - name: make
+      run: make
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Dev Build"
+        files: |
+          *.hex
