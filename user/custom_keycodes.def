@@ -1,0 +1,41 @@
+CUSTOM_KC_STR(EQ2, "==")
+CUSTOM_KC_STR(EQ3, "===")
+CUSTOM_KC_STR(NEQ, "!=")
+CUSTOM_KC_STR(NEQ2, "!==")
+CUSTOM_KC_STR(FAT_ARROW, "=>")
+CUSTOM_KC_STR(GEQ, ">=")
+CUSTOM_KC_STR(LEQ, "<=")
+CUSTOM_KC_STR(BAND, "&&")
+CUSTOM_KC_STR(EXP, "**")
+CUSTOM_KC_STR(BOR, "||")
+CUSTOM_KC_STR(COMMENT, "//")
+CUSTOM_KC_STR(DOTDOT, "../")
+CUSTOM_KC_ACT(SEMINL,
+  SEND_STRING(";");
+  tap_code(KC_ENT);
+  ,
+)
+CUSTOM_KC_ACT(SELWORD,
+  register_code(KC_LCTL);
+  if (state == STATE_NONE) {
+    SEND_STRING(SS_TAP(X_RGHT) SS_TAP(X_LEFT));
+  }
+  register_code(KC_LSFT);
+  register_code(KC_RGHT);
+  state = STATE_WORD;
+  return false;
+  ,
+)
+CUSTOM_KC_ACT(SELSENT,
+    if (state == STATE_NONE) {
+      clear_mods();
+      SEND_STRING(SS_TAP(X_HOME) SS_LSFT(SS_TAP(X_END)));
+      state = STATE_FIRST_LINE;
+    } else {
+      register_code(KC_LSFT);
+      register_code(KC_DOWN);
+      state = STATE_LINE;
+    }
+    return false;
+  ,
+)

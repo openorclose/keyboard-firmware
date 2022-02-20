@@ -1,3 +1,4 @@
+#pragma once
 static uint8_t prior_saved_mods = 0;
 static uint16_t prior_keycode =
     KC_NO;
